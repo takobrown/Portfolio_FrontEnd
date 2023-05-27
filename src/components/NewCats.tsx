@@ -104,9 +104,9 @@ const NewCats = () => {
         }
       });
 
-      console.log('Cat and image uploaded successfully!');
+      console.log('Cat image uploaded successfully!');
     } catch (error) {
-      console.error('Error uploading cat:', error);
+      console.error('Error uploading cat image:', error);
     }
   };
 
