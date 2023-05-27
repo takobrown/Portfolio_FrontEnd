@@ -6,6 +6,14 @@ import { Buffer } from 'buffer';
 
 const Login = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({
+    username: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    avatarurl: ''
+  });
 
   const handleLogin = async (values: any) => {
     try {
@@ -20,34 +28,13 @@ const Login = () => {
     }
   };
 
-  const handleCreateUser = async (values: any) => {
-    try {
-      const newUser = {
-        username: values.username,
-        password: values.password,
-        email: values.email,
-        firstname: values.firstname,
-        lastname: values.lastname,
-        avatarurl: values.avatarurl
-      };
-
-      await axios.post(`${api.url}/users`, newUser);
-
-      message.success('User account created successfully!');
-    } catch (error) {
-      console.error('Error creating user account:', error);
-      message.error('Failed to create user account!');
-    }
-  };
-
   const handleUpdateUserRecord = async (values: any) => {
     try {
       const updatedUser = {
         username: values.username,
-        password: values.password,
-        email: values.email,
         firstname: values.firstname,
         lastname: values.lastname,
+        email: values.email,
         avatarurl: values.avatarurl
       };
 
@@ -57,6 +44,7 @@ const Login = () => {
         }
       });
 
+      setUserData(updatedUser);
       message.success('User record updated successfully!');
     } catch (error) {
       console.error('Error updating user record:', error);
@@ -73,6 +61,15 @@ const Login = () => {
       });
 
       setLoggedIn(false);
+      setUserData({
+        username: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        avatarurl: ''
+      });
+
       message.success('User record deleted successfully!');
     } catch (error) {
       console.error('Error deleting user record:', error);
@@ -90,12 +87,13 @@ const Login = () => {
     if (loggedIn) {
       handleUpdateUserRecord(values);
     } else {
-      handleCreateUser(values);
+      handleLogin(values);
     }
   };
 
   const loginRules = [
-    { required: true, message: 'Cannot be empty!' },
+    { required: true, message: 'Please enter your username' },
+    { required: true, message: 'Please enter your password' }
   ];
 
   return (
@@ -108,35 +106,25 @@ const Login = () => {
           <Form.Item name="password" label="Password" rules={loginRules}>
             <Input.Password />
           </Form.Item>
-          <Form.Item name="email" label="Email" rules={loginRules}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="firstname" label="First Name">
-            <Input />
-          </Form.Item>
-          <Form.Item name="lastname" label="Last Name">
-            <Input />
-          </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">Create User Account</Button>
-            <Button onClick={handleLogin}>Login</Button>
+            <Button type="primary" htmlType="submit">Login</Button>
           </Form.Item>
         </Form>
       ) : (
-        <Form name="update" onFinish={handleFormSubmit}>
+        <Form name="update" onFinish={handleFormSubmit} initialValues={userData}>
           <Form.Item name="username" label="Username" rules={loginRules}>
-            <Input />
+            <Input disabled />
           </Form.Item>
           <Form.Item name="password" label="Password" rules={loginRules}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item name="email" label="Email" rules={loginRules}>
-            <Input />
+            <Input.Password disabled />
           </Form.Item>
           <Form.Item name="firstname" label="First Name">
             <Input />
           </Form.Item>
           <Form.Item name="lastname" label="Last Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="email" label="Email">
             <Input />
           </Form.Item>
           <Form.Item name="avatarurl" label="Avatar URL">
