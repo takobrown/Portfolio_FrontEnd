@@ -11,6 +11,7 @@ import NewCats from './components/NewCats';
 import UpdateCats from './components/UpdateCats';
 import Login from './components/Login';
 import NewUsers from './components/NewUsers';
+import CatbreedApi from './components/CatbreedApi';
 
 const { Header, Content, Footer } = Layout;
 const logout = ()=>{
@@ -28,6 +29,7 @@ export default function App() {
             <Link to="/login">Login</Link>
             <Link to="/newusers">Register</Link>
             <Link to="" onClick={logout}>Logout</Link>
+            <Link to="/api">Cat Breeds</Link>
           </Space>
         </nav>
       </Header>
@@ -40,6 +42,7 @@ export default function App() {
           <Route path="/edit/:aid" element={<UpdateCats />} />
           <Route path="/login" element={<Login />} />
           <Route path="/newusers" element={<NewUsers />}/>
+          <Route path="/api" element={<CatbreedApi />} />
         </Routes>
       </Content>
       <Footer>
