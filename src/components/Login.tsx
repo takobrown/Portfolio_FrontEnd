@@ -14,6 +14,7 @@ interface UserData {
 }
 
 const Login: React.FC = () => {
+  const [id, setId] = React.useState('')
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState<UserData>({
     username: '',
@@ -28,14 +29,105 @@ const Login: React.FC = () => {
     try {
       const access_token = Buffer.from(`${values.username}:${values.password}`, 'utf8').toString('base64');
       localStorage.setItem('atoken', access_token);
-      setLoggedIn(true);
 
-      message.success('Login successful!');
+      // setLoggedIn(true);
+      await axios.get(`${api.url}/private`, {
+        headers: {
+          'Authorization': `Basic ${localStorage.getItem('atoken')}`
+        }
+      }).then((res) => {
+
+  
+         axios.get(`${api.url}/users/${values.username}`
+        ).then((res:any) => {
+        setId(  localStorage.setItem("userid", res.data[0].id))
+          console.log(localStorage.getItem("userid"))
+           }).then((res) => {
+      /*  localStorage.setItem('userid', res.data[0].id);
+        setId(localStorage.getItem('userid'))
+        console.log(localStorage.getItem('userid')) */
+        setLoggedIn(true);
+        message.success('Login successful!');
+          })
+
+
+
+        
+      })
     } catch (error) {
       console.error('Error logging in:', error);
       message.error('Failed to login!');
     }
   };
+
+/*const handleLogin = async (values: any) => {
+  try {
+    const access_token = Buffer.from(`${values.username}:${values.password}`, 'utf8').toString('base64');
+    localStorage.setItem('atoken', access_token);
+
+    const response = await axios.get(`${api.url}/private`, {
+      headers: {
+        'Authorization': `Basic ${localStorage.getItem('atoken')}`
+      }
+    });
+
+    const responseData = response.data;
+
+    if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].id) {
+      const userId = responseData[0].id;
+      localStorage.setItem('userid', userId);
+      setId(userId);
+      console.log(localStorage.getItem('userid'));
+      setLoggedIn(true);
+      message.success('Login successful!');
+    } else {
+      console.error('Invalid response data or missing ID:', response);
+      throw new Error('Invalid response data or missing ID');
+    }
+  } catch (error) {
+    console.error('Error logging in:', error);
+    console.error('API response:', error.response);
+    message.error('Failed to login!');
+  }
+};
+
+const handleLogin = async (values: any) => {
+  try {
+    const access_token = Buffer.from(`${values.username}:${values.password}`, 'utf8').toString('base64');
+    localStorage.setItem('atoken', access_token);
+
+    const response = await axios.get(`${api.url}/private`, {
+      headers: {
+        'Authorization': `Basic ${localStorage.getItem('atoken')}`
+      }
+    });
+
+    const responseData = response.data;
+
+    if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].id) {
+      const userId = responseData[0].id;
+      localStorage.setItem('userid', userId);
+      setId(userId);
+      console.log(localStorage.getItem('userid'));
+      setLoggedIn(true);
+      message.success('Login successful!');
+    } else {
+      console.error('Invalid response data or missing ID:', responseData);
+      throw new Error('Invalid response data or missing ID');
+    }
+  } catch (error) {
+    console.error('Error logging in:', error);
+    console.error('API response:', error.response);
+    message.error('Failed to login!');
+  }
+};*/
+
+
+
+
+
+
+
 
   const handleUpdateUserRecord = async (values: UserData) => {
     try {
@@ -48,7 +140,7 @@ const Login: React.FC = () => {
         avatarurl: values.avatarurl,
       };
 
-      await axios.put(`${api.url}/users`, updatedUser, {
+      await axios.put(`${api.url}/users/${id}`, updatedUser, {
         headers: {
           'Authorization': `Basic ${localStorage.getItem('atoken')}`
         }
@@ -64,7 +156,7 @@ const Login: React.FC = () => {
 
   const handleDeleteUserRecord = async () => {
     try {
-      await axios.delete(`${api.url}/users`, {
+      await axios.delete(`${api.url}/users/${id}`, {
         headers: {
           'Authorization': `Basic ${localStorage.getItem('atoken')}`
         }
