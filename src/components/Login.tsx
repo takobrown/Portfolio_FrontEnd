@@ -43,18 +43,19 @@ const Login: React.FC = () => {
         username: values.username,
         firstname: values.firstname,
         lastname: values.lastname,
+        password: values.password,
         email: values.email,
-        avatarurl: values.avatarurl
+        avatarurl: values.avatarurl,
       };
 
       await axios.put(`${api.url}/users`, updatedUser, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('atoken')}`
+          'Authorization': `Basic ${localStorage.getItem('atoken')}`
         }
       });
 
       setUserData(updatedUser);
-      message.success('User record updated successfully!');
+      message.success('User updated successfully!');
     } catch (error) {
       console.error('Error updating user record:', error);
       message.error('Failed to update user record!');
@@ -65,7 +66,7 @@ const Login: React.FC = () => {
     try {
       await axios.delete(`${api.url}/users`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('atoken')}`
+          'Authorization': `Basic ${localStorage.getItem('atoken')}`
         }
       });
 
@@ -101,8 +102,7 @@ const Login: React.FC = () => {
   };
 
   const loginRules = [
-    { required: true, message: 'Please enter your username' },
-    { required: true, message: 'Please enter your password' }
+    { required: true, message: 'Cannot be empty!' }
   ];
 
   return (
@@ -141,7 +141,7 @@ const Login: React.FC = () => {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">Update User Record</Button>
-            <Button type="danger" onClick={handleDeleteUserRecord}>Delete User Record</Button>
+            <Button type="primary" danger onClick={handleDeleteUserRecord}>Delete User Record</Button>
             <Button onClick={handleLogout}>Logout</Button>
           </Form.Item>
         </Form>

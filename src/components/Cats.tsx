@@ -55,7 +55,7 @@ const Cats = () => {
             Search
           </Button>
           <Row>
-            {cats.map(({ id, title, alltext }) => (
+            {cats.map(({ id, title, alltext}) => (
               <Col span={8} key={id}>
                 <Card title={title} style={{ width: 300 }}>
                   <p>{alltext}</p>

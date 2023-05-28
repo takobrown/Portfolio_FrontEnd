@@ -68,6 +68,8 @@ const NewCats = () => {
 
   const username = "alice";
   const password = "alice1234";
+
+
   // Create token by username:password
   const access_token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64');
   localStorage.setItem('atoken', access_token);
@@ -75,6 +77,7 @@ const NewCats = () => {
   const handleFormSubmit = async (values: any) => {
     const t = values.title;
     const c = values.context;
+
     console.log(values, t, c);
 
     const formData = new FormData();
@@ -97,7 +100,7 @@ const NewCats = () => {
       const catId = response.data.id;
       
       // Upload the image separately
-      await axios.post(`${api.url}/cats/${catId}/upload`, formData, {
+      await axios.post(`${api.url}/cats/${id}/upload`, formData, {
         headers: {
           'Authorization': `Basic ${localStorage.getItem('atoken')}`,
           'Content-Type': 'multipart/form-data'
