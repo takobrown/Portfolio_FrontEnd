@@ -4,9 +4,18 @@ import axios from "axios";
 import { api } from './common/http-common';
 import { Buffer } from 'buffer';
 
-const Login = () => {
+interface UserData {
+  username: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  avatarurl: string;
+}
+
+const Login: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<UserData>({
     username: '',
     password: '',
     firstname: '',
@@ -28,9 +37,9 @@ const Login = () => {
     }
   };
 
-  const handleUpdateUserRecord = async (values: any) => {
+  const handleUpdateUserRecord = async (values: UserData) => {
     try {
-      const updatedUser = {
+      const updatedUser: UserData = {
         username: values.username,
         firstname: values.firstname,
         lastname: values.lastname,
@@ -83,7 +92,7 @@ const Login = () => {
     message.success('Logout successful!');
   };
 
-  const handleFormSubmit = (values: any) => {
+  const handleFormSubmit = (values: UserData) => {
     if (loggedIn) {
       handleUpdateUserRecord(values);
     } else {
