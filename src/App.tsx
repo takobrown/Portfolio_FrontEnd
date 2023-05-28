@@ -13,7 +13,9 @@ import Login from './components/Login';
 import NewUsers from './components/NewUsers';
 
 const { Header, Content, Footer } = Layout;
-
+const logout = ()=>{
+    localStorage.clear();
+}
 export default function App() {
   return (
     <Router>
@@ -23,9 +25,9 @@ export default function App() {
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/newcats">New Cats</Link>
-            <Link to="/updatecats">Update Cats</Link>
             <Link to="/login">Login</Link>
             <Link to="/newusers">Register</Link>
+            <Link to="" onClick={logout}>Logout</Link>
           </Space>
         </nav>
       </Header>
@@ -35,7 +37,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/a/:aid" element={<CatsDetail />} />
           <Route path="/newcats" element={<NewCats />} />
-          <Route path="/updatecats" element={<UpdateCats />} />
+          <Route path="/edit/:aid" element={<UpdateCats />} />
           <Route path="/login" element={<Login />} />
           <Route path="/newusers" element={<NewUsers />}/>
         </Routes>

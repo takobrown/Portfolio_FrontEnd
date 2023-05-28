@@ -2,8 +2,9 @@ import React from 'react';
 
 const About = () => {
   //clear the local storage
-  localStorage.clear();
-  return <p>About</p>
+ const c= localStorage.getItem('atoken')
+  //localStorage.clear();
+  return <p>${c}</p>
 }
 
 export default About;

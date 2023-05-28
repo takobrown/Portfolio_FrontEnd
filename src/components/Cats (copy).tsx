@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Col, Row, Spin, Input, Button } from 'antd';
-import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
+//import cats from './cats.json';
 import { api } from './common/http-common';
 import axios from 'axios';
+import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 
-interface Cat {
-  id: number;
-  title: string;
-  alltext: string;
-  imageurl: string;
-}
 
 const Cats = () => {
   const [cats, setCats] = useState<Cat[] | null>(null);
@@ -34,10 +29,9 @@ const Cats = () => {
 
   const handleSearch = () => {
     // Filter the cats based on the search term
-    const filteredCats = cats?.filter(
-      (cat) =>
-        cat.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        cat.alltext.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredCats = cats?.filter(cat =>
+      cat.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.alltext.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setCats(filteredCats);
   };
@@ -54,18 +48,18 @@ const Cats = () => {
           <Input
             placeholder="Search cats"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             style={{ marginBottom: '1rem' }}
           />
           <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
             Search
           </Button>
           <Row>
-            {cats.map(({ id, title, alltext, imageurl }) => (
+            {cats.map(({ id, title, alltext}) => (
               <Col span={8} key={id}>
                 <Card title={title} style={{ width: 300 }}>
                   <p>{alltext}</p>
-                  {imageurl && <img src={imageurl} alt="Cat" style={{ width: '100%', marginTop: '1rem' }} />}
+                  <p></p>
                   <Link to={`/a/${id}`}>Details</Link>
                 </Card>
               </Col>
