@@ -13,6 +13,7 @@ interface Cat {
 }
 
 const Cats = () => {
+  
   const [cats, setCats] = useState<Cat[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -63,8 +64,8 @@ const Cats = () => {
           <Row>
             {cats.map(({ id, title, alltext, imageurl }) => (
               <Col span={8} key={id}>
-                <Card title={title} style={{ width: 300 }}>
-                  <p>{alltext}</p>
+                <Card title={title}  style={{ width: 300 }}>
+                  <p>Sex : {alltext}</p>
                   {imageurl && <img src={imageurl} alt="Cat" style={{ width: '100%', marginTop: '1rem' }} />}
                   <Link to={`/a/${id}`}>Details</Link>
                 </Card>

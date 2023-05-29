@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import { Form, Input, Button, message } from 'antd';
 import axios from "axios";
 import { api } from './common/http-common';
@@ -13,9 +13,29 @@ interface UserData {
   avatarurl: string;
 }
 
+
 const Login: React.FC = () => {
+const [loggedIn, setLoggedIn] = useState(false);
+  
+ const loginOk = (localStorage.getItem('atoken') !== null);
+  function refresh() {
+  window.location.reload(false);
+}
+  const loginOOk =()=>{
+ useEffect(() => {
+      setLoggedIn(true); 
+  }, []);
+     
+ }
+if(loginOk){
+  loginOOk()
+}
+  const delay = ms => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
   const [id, setId] = React.useState('')
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [permission, setPermission] = React.useState('')
+    const [logindata, setLoginData] = React.useState('')
   const [userData, setUserData] = useState<UserData>({
     username: '',
     password: '',
@@ -25,6 +45,9 @@ const Login: React.FC = () => {
     avatarurl: ''
   });
 
+
+
+ 
   const handleLogin = async (values: any) => {
     try {
       const access_token = Buffer.from(`${values.username}:${values.password}`, 'utf8').toString('base64');
@@ -37,25 +60,30 @@ const Login: React.FC = () => {
         }
       }).then((res) => {
 
-  
-         axios.get(`${api.url}/users/${values.username}`
-        ).then((res:any) => {
-        setId(localStorage.setItem("userid", res.data[0].id))
-          console.log(localStorage.getItem("userid"))
-           }).then((res) => {
-      /*  localStorage.setItem('userid', res.data[0].id);
-        setId(localStorage.getItem('userid'))
-        console.log(localStorage.getItem('userid')) */
-        setLoggedIn(true);
-        message.success('Login successful!');
-          })        
+        axios.get(`${api.url}/users/${values.username}`
+        ).then((res: any) => {
+          setId(localStorage.setItem("userid", res.data[0].id))
+          setPermission(localStorage.setItem("per", res.data[0].permission))
+           localStorage.setItem("username", res.data[0].username)
+          console.log(localStorage.getItem("userid")) 
+        }).then((res) => {
+         // setLoginData(res.data)
+           refresh()
+          /*  localStorage.setItem('userid', res.data[0].id);
+            setId(localStorage.getItem('userid'))
+            console.log(localStorage.getItem('userid')) */
+        // setLoginData(res.data)
+           setLoggedIn(true);  
+           message.success('Login successful!');
+        
+        })
+ 
       })
     } catch (error) {
       console.error('Error logging in:', error);
       message.error('Failed to login!');
     }
   };
-
 
 
   const handleUpdateUserRecord = async (values: UserData) => {
@@ -137,17 +165,12 @@ const Login: React.FC = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">Login</Button>
+            <Button type="primary" htmlType="submit" >Login</Button>
           </Form.Item>
         </Form>
       ) : (
         <Form name="update" onFinish={handleFormSubmit} initialValues={userData}>
-          <Form.Item name="username" label="Username" rules={loginRules}>
-            <Input disabled />
-          </Form.Item>
-          <Form.Item name="password" label="Password" rules={loginRules}>
-            <Input.Password disabled />
-          </Form.Item>
+
           <Form.Item name="firstname" label="First Name">
             <Input />
           </Form.Item>

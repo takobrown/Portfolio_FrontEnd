@@ -21,17 +21,19 @@ const CatsDetail = () => {
   if (selectedCat) {
     return (
       <>
-        <h1>{selectedCat.title}</h1>
-        <p>{selectedCat.fullText}</p>
-        <Button type="primary" onClick={() => navigate(-1)}>
-          Back
-        </Button>
-          <Button type="primary" onClick={() => delete1(aid)}>
-          Delete
-        </Button>
+
+
+        
          <Button type="primary" href={`/edit/${aid}`}>
           Edit
         </Button>
+        <Button type="primary" onClick={() => navigate(-1)}>
+          Back
+        </Button>
+        <Button type="primary" danger onClick={() => delete1(aid)}>
+          Delete
+        </Button>
+        
       </>
       
     );

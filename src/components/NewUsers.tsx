@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, message } from 'antd';
 import axios from "axios";
 import { api } from './common/http-common';
 
 const NewUsers = () => {
   const handleFormSubmit = async (values: any) => {
-    const { username, password, email, signupcode } = values;
+    const { username, password, email, signupcode, permission } = values;
 
     if (!username || !password || !email || !signupcode) {
       message.error('Please fill in all the required fields');
@@ -13,7 +13,7 @@ const NewUsers = () => {
     }
 
     if (signupcode !== 'pet') {
-      message.error('You are not allowed to register an account. Try Again or Leave it!');
+       message.error('You are not allowed to register an account. Try Again or Leave it!');
       return;
     }
 
@@ -28,7 +28,7 @@ const NewUsers = () => {
   };
 
   return (
-    <Form name="newUser" onFinish={handleFormSubmit}>
+    <Form name="newUser" onFinish={handleFormSubmit} initialValues={{ permission:'1' }}>
       <Form.Item name="firstname" label="First Name">
         <Input />
       </Form.Item>
@@ -45,6 +45,9 @@ const NewUsers = () => {
         <Input type="email" />
       </Form.Item>
       <Form.Item name="avatarurl" label="Avatar URL">
+        <Input />
+      </Form.Item>
+      <Form.Item name="permission" hidden label="permission">
         <Input />
       </Form.Item>
       <Form.Item name="signupcode" label="Sign-up Code" rules={[{ required: true, message: 'Sign-up Code can be got from your supervisor.' }]}>
