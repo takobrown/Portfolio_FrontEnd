@@ -16,17 +16,22 @@ interface UserData {
 
 const Login: React.FC = () => {
 const [loggedIn, setLoggedIn] = useState(false);
-  
+  const [logindata, setLoginData] = React.useState('')
  const loginOk = (localStorage.getItem('atoken') !== null);
   function refresh() {
   window.location.reload(false);
 }
   const loginOOk =()=>{
+
+  
  useEffect(() => {
       setLoggedIn(true); 
   }, []);
-     
  }
+
+
+
+  
 if(loginOk){
   loginOOk()
 }
@@ -35,7 +40,7 @@ if(loginOk){
 );
   const [id, setId] = React.useState('')
     const [permission, setPermission] = React.useState('')
-    const [logindata, setLoginData] = React.useState('')
+   
   const [userData, setUserData] = useState<UserData>({
     username: '',
     password: '',
